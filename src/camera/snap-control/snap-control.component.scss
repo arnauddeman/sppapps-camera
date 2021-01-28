@@ -1,0 +1,19 @@
+@import "_grey";
+
+.snap-control {
+    margin: 0;
+    padding: 0.4em;
+    display: flex;
+    outline: none;
+    border: 1px solid $medium-grey;
+    background: transparent;
+    border-radius: 0.4em;
+    cursor: pointer;
+
+    &:hover {
+        background-color: $very-light-grey;
+        i {
+            color: $medium-grey-darker;
+        }
+    }
+}

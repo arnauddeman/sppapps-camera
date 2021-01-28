@@ -1,0 +1,17 @@
+.capture-gallery-item {
+    display: flex;
+    max-width: 100%;
+    padding: 0.4em;
+    .main-container {
+        padding: 0.4em;
+        background-color: white;
+        border-radius: 0.4em;
+        .inner-container {
+            padding: 0.4em;
+
+            .capture {
+                max-width: 100%;
+            }
+        }
+    }
+}

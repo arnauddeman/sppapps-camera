@@ -1,0 +1,7 @@
+<div class="capture-gallery">
+        <div class="main-container">
+                <sppapps-capture-gallery-item [style.max-width.%]="maxWidth"
+                        *ngFor="let capture of captures; trackBy: trackCapture" [capture]="capture">
+                </sppapps-capture-gallery-item>
+        </div>
+</div>
