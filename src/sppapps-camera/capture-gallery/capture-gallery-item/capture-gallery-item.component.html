@@ -1,0 +1,11 @@
+<div *ngIf="capture?.data" class="capture-gallery-item">
+        <div class="main-container" [class.hidden]="!loaded" [class.mat-elevation-z2]="!selected"
+                [class.mat-elevation-z4]="selected" [selectable]="capture"
+                [selection-group]="settings.selection.groups.captures" (selectionChange)="onSelectionChange($event)">
+                <sppapps-selection-badge [selected]="selected" [highlighted]="true">
+                </sppapps-selection-badge>
+                <div class="inner-container">
+                        <img #imgElement [src]="capture.data" (load)="onImageLoaded()" class="capture" />
+                </div>
+        </div>
+</div>

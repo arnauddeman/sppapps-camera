@@ -1,0 +1,12 @@
+<div *ngIf="render" class="capture-gallery">
+        <div class="main-container">
+                <sppapps-capture-empty-gallery [render]="empty"></sppapps-capture-empty-gallery>
+                <div *ngFor="let capture of captures; trackBy: trackCapture" class="capture-container"
+                        [style.max-width.%]="maxWidth">
+
+                        <!--[class.selected]="isInSelectionGroup(capture)"-->
+                        <sppapps-capture-gallery-item [capture]="capture">
+                        </sppapps-capture-gallery-item>
+                </div>
+        </div>
+</div>

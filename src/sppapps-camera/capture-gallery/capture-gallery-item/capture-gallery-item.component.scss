@@ -1,0 +1,29 @@
+@import "_blue";
+
+.capture-gallery-item {
+    display: flex;
+    max-width: 100%;
+    padding: 0.4em;
+
+    .main-container {
+        padding: 0.4em;
+        background-color: white;
+        border-radius: 0.4em;
+        position: relative;
+
+        &.hidden {
+            z-index: -1;
+        }
+
+        .inner-container {
+            padding: 0.4em;
+
+            .capture {
+                max-width: 100%;
+            }
+        }
+        &.selected {
+            border: 1px solid $medium-blue;
+        }
+    }
+}

@@ -1,0 +1,13 @@
+@import "_grey";
+@import "_blue";
+@import "_green";
+@import "_red";
+
+sppapps-snap {
+    .webcam-container {
+        .webcam-wrapper {
+            border-radius: 0.4em;
+            overflow: hidden;
+        }
+    }
+}

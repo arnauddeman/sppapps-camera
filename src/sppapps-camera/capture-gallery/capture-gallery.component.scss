@@ -1,0 +1,10 @@
+@import "_red";
+
+.capture-gallery {
+    display: flex;
+    flex-grow: 1;
+    .main-container {
+        display: flex;
+        flex-grow: 1;
+    }
+}

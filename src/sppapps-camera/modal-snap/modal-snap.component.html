@@ -1,0 +1,7 @@
+<sppapps-modal class="modal-snap" title="{{i18nB + 'snap_title' | trans}}" icon="sppapps sppapps-m sppapps-camera"
+        (closeEvent)="onClose()" size="{{ComponentSize.large}}" [userConfirmationRequired]="userConfirmationRequired"
+        (userCancelConfirmation)="onUserCancelConfirmation($event)" [pendingId]="pendingId">
+
+        <sppapps-snap (submit)="onSubmit()" (cancel)="onClose()"></sppapps-snap>
+
+</sppapps-modal>
