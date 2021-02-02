@@ -1,7 +1,7 @@
-<div flexHost class="snap">
+<div flexHost class="snap" [class.ready]="ready$|async">
         <div class="main-container">
-                <div class="webcam-container" [style.height.px]="150">
-                        <webcam *ngIf="active$ | async" [height]="150" [width]="200" [trigger]="snap$"
+                <div class="webcam-container" [style.height.px]="width">
+                        <webcam *ngIf="active$ | async" [height]="height" [width]="width" [trigger]="snap$"
                                 (cameraSwitched)="onCameraSwitched($event)" (initError)="onInitError($event)"
                                 (imageCapture)="onImageCapture($event)">
                         </webcam>
@@ -16,7 +16,7 @@
                 <div class="control-container">
                         <ng-container *ngIf="ready$ | async">
                                 <sppapps-cancel (click)="onCancel()"></sppapps-cancel>
-                                <sppapps-ok (click)="onOk()"></sppapps-ok>
+                                <sppapps-ok (click)="onOk()" [disabled]="okDisabled$ | delay | async"></sppapps-ok>
                         </ng-container>
                 </div>
         </div>

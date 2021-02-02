@@ -4,12 +4,10 @@ import { CAMERA_I18N_BUNDLE, Capture } from '@sppapps-camera-shared';
 import { SComp } from '@sppapps-component';
 import { I18NService } from '@sppapps-i18n';
 import { LoggingService } from '@sppapps-logging';
-import { RxOperationStatus } from '@sppapps-rx';
-import { WebcamImage } from 'ngx-webcam';
+import { RxOperationQuery, RxOperationStatus } from '@sppapps-rx';
 import { ReplaySubject } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
-import { getSelectionGroup, SelectionGroup } from '@sppapps-selection-manager';
-import { getSnapOperation, SnapCameraAction } from '../redux';
+import { getCameraResetOperation, getSnapOperation, ResetCameraAction, SnapCameraAction, UnselectSnapCameraAction } from '../redux';
 import { CameraState } from '../redux/camera.states';
 
 @Component({
@@ -35,6 +33,7 @@ export class CaptureGalleryComponent extends SComp implements OnInit {
   ngOnInit(): void {
 
     this.maxWidth = this.size ? 100 / this.size : 100;
+    this._store.dispatch(new UnselectSnapCameraAction());
     this._manageSubscriptions(
       this._store.pipe(
         select(getSnapOperation),
@@ -49,6 +48,19 @@ export class CaptureGalleryComponent extends SComp implements OnInit {
           status: RxOperationStatus.COMPLETED
         }));
         this._addCapture(operation.data);
+      }),
+      this._store.pipe(
+        select(getCameraResetOperation),
+        filter(operation => !!operation),
+        tap(op => this.logger.debug('getCaperaResetOperation tap#1 op', op)),
+        filter(operation => operation.query === RxOperationQuery.RESET && operation.status === RxOperationStatus.TRIGGERED),
+      ).subscribe(operation => {
+        this.logger.debug('getCaperaResetOperation Reseting');
+        this.captures = [];
+        this._store.dispatch(new ResetCameraAction({
+          ...operation,
+          status: RxOperationStatus.PROCESSED
+        }));
       })
     );
   }
@@ -58,7 +70,7 @@ export class CaptureGalleryComponent extends SComp implements OnInit {
     this.logger.debug('_addCapture typeof  data', typeof data);
     const order = this.captures.length ? +this.captures[this.captures.length - 1]._id + 1 : 0;
     const newCapture: Capture = {
-      _id: order,
+      _id: String(order),
       data: data
     };
     const updatedCaptures = [...this.captures];

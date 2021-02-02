@@ -1,4 +1,5 @@
-<button class="snap-launcher" [disabled]="disabled || (active$ | async)" attr.aria-label="{{i18nB + tooltip | trans}}"
-        matTooltip="{{i18nB + tooltip | trans}}" matTooltipShowDelay="{{settings.tooltip.delay}}">
+<button class="snap-launcher no-disabled-background" [disabled]="disabled || (active$ | async)"
+        attr.aria-label="{{i18nB + tooltip | trans}}" matTooltip="{{i18nB + tooltip | trans}}"
+        matTooltipShowDelay="{{settings.tooltip.delay}}">
         <i class="{{iconCommonClass}} {{iconSizeClass}} {{iconClass}}" [command]="settings.commands.camera_launch"> </i>
 </button>

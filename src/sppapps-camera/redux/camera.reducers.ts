@@ -1,6 +1,11 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { getLogger as _getLogger } from '@sppapps-logging';
-import { CameraAction, CameraActionTypes, isCameraAction, ManageCameraAction, ReadyCameraAction, SnapCameraAction } from './camera.actions';
+import {
+  CameraAction, CameraActionTypes, isCameraAction,
+  ManageCameraAction, ReadyCameraAction, ResetCameraAction,
+  SelectSnapCameraAction,
+  SnapCameraAction
+} from './camera.actions';
 import { CameraState, initialCameraState } from './camera.states';
 
 const getLogger = () => _getLogger('cameraReducers');
@@ -12,9 +17,19 @@ export const getCameraManageOperation = createSelector(
   state => state.manageOperation
 );
 
+export const getCameraResetOperation = createSelector(
+  getCameraStateFeature,
+  state => state.resetOperation
+);
+
 export const getSnapOperation = createSelector(
   getCameraStateFeature,
   state => state.snapOperation
+);
+
+export const getSelectedSnap = createSelector(
+  getCameraStateFeature,
+  state => state.selectedSnap
 );
 
 export const getCameraReady = createSelector(
@@ -30,8 +45,6 @@ export function cameraReducers(state = initialCameraState, action: CameraAction)
   getLogger().debug('cameraReducers', action);
 
   switch (action.type) {
-
-
     case CameraActionTypes.MANAGE: {
       return {
         ...state,
@@ -39,10 +52,31 @@ export function cameraReducers(state = initialCameraState, action: CameraAction)
       };
     }
 
+    case CameraActionTypes.RESET: {
+      return {
+        ...state,
+        resetOperation: (<ResetCameraAction>action).payload
+      };
+    }
+
     case CameraActionTypes.SNAP: {
       return {
         ...state,
         snapOperation: (<SnapCameraAction>action).payload
+      };
+    }
+
+    case CameraActionTypes.SELECT: {
+      return {
+        ...state,
+        selectedSnap: (<SelectSnapCameraAction>action).payload
+      };
+    }
+
+    case CameraActionTypes.UNSELECT: {
+      return {
+        ...state,
+        selectedSnap: null
       };
     }
 

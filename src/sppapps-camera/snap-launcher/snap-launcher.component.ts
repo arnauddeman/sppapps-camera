@@ -4,9 +4,10 @@ import { CAMERA_I18N_BUNDLE } from '@sppapps-camera-shared';
 import { SComp } from '@sppapps-component';
 import { I18NService } from '@sppapps-i18n';
 import { LoggingService } from '@sppapps-logging';
+import { RxOperationQuery, RxOperationStatus } from '@sppapps-rx';
+import { Dimensions2D } from '@sppapps-uix-shared';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { RxOperationQuery, RxOperationStatus } from '../../../../sppapps-rx/src/shared';
 import { getCameraManageOperation } from '../redux';
 import { CameraState } from '../redux/camera.states';
 
@@ -23,7 +24,7 @@ export class SnapLauncherComponent extends SComp implements OnInit {
   @Input() tooltip = 'edit_image';
   @Input() src: string;
   active$: Observable<boolean>;
-
+  @Input() dimensions: Dimensions2D;
 
   constructor(i18nService: I18NService,
     loggingService: LoggingService,

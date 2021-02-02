@@ -1,15 +1,21 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { CAMERA_I18N_BUNDLE } from '@sppapps-camera-shared';
 import { SComp } from '@sppapps-component';
+import { toScalar } from '@sppapps-helpers-shared';
 import { I18NService } from '@sppapps-i18n';
 import { LoggingService } from '@sppapps-logging';
+import { StopPendingAction } from '@sppapps-pending';
 import { RxOperationQuery, RxOperationStatus } from '@sppapps-rx';
+import { getSelectionGroup } from '@sppapps-selection-manager';
+import { Dimensions2D } from '@sppapps-uix-shared';
 import { WebcamImage } from 'ngx-webcam';
-import { combineLatest, Observable, ReplaySubject, Subject } from 'rxjs';
-import { distinctUntilChanged, filter, map, mergeMap, tap } from 'rxjs/operators';
-import { StopPendingAction } from '../../../../sppapps-pending/src/sppapps-pending';
-import { getCameraManageOperation, getCameraReady, getSnapOperation, ReadyCameraAction, SnapCameraAction } from '../redux';
+import { Observable, Subject } from 'rxjs';
+import { filter, map, tap } from 'rxjs/operators';
+import {
+  getCameraManageOperation, getCameraReady, getSnapOperation,
+  ReadyCameraAction, SnapCameraAction
+} from '../redux';
 import { CameraState } from '../redux/camera.states';
 
 @Component({
@@ -19,16 +25,19 @@ import { CameraState } from '../redux/camera.states';
 })
 export class SnapComponent extends SComp implements OnInit, OnDestroy {
 
-
   private _trigger = new Subject<void>();
-  // private snap$ = new ReplaySubject<void>(0);
-
-  // snap$: Observable<any>;
+  private _width: number;
+  private _height: number;
   active$: Observable<boolean>;
   ready$: Observable<boolean>;
+  okDisabled$: Observable<boolean>;
 
+  private _size: Dimensions2D;
   @Output() cancel = new EventEmitter<void>();
   @Output() submit = new EventEmitter<void>();
+
+
+
 
   constructor(i18nService: I18NService,
     loggingService: LoggingService,
@@ -37,7 +46,7 @@ export class SnapComponent extends SComp implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.logger.debug('OnReady');
+    this.logger.debug('ngOnInit size', this.size);
     this.active$ = this._store.pipe(
       select(getCameraManageOperation),
       map(operation => operation?.query === RxOperationQuery.MANAGE && operation?.status === RxOperationStatus.TRIGGERED)
@@ -45,11 +54,17 @@ export class SnapComponent extends SComp implements OnInit, OnDestroy {
     this.ready$ = this._store.pipe(
       select(getCameraReady),
     );
-    // this.snap$ = this.snap$.pipe(
-    //   tap(order => this.logger.debug('order', order)),
-    //   distinctUntilChanged(),
-    //   tap(() => this.logger.debug('SNAP'))
-    // );
+
+    this.okDisabled$ = this._store.pipe(
+      select(getSelectionGroup(this.settings.selection.groups.captures)),
+      tap(selectionGroup => this.logger.debug('selectionGroup', selectionGroup)),
+      map(selectionGroup => Object.values(selectionGroup?.items || {})),
+      map(selected => toScalar(selected)),
+      tap(selected => this.logger.debug('selected', selected)),
+      map(selected => !selected)
+    );
+
+
 
     this._manageSubscriptions(
       this._store.pipe(
@@ -116,5 +131,32 @@ export class SnapComponent extends SComp implements OnInit, OnDestroy {
     this.logger.debug('onCancel');
     this.cancel.emit();
 
+  }
+
+  get width(): number {
+    if (this._width == null) {
+      this.logger.debug('get width size', this.size);
+      this._width = this.size?.w || this.settings.capture.defaultWidth;
+    }
+    return this._width;
+  }
+
+  get height(): number {
+    if (this._height == null) {
+      this._height = this.size?.h || this.settings.capture.defaultHeight;
+    }
+    return this._height;
+  }
+
+  @Input()
+  set size(size: Dimensions2D) {
+    this.logger.debug('set size', size);
+    this._size = size;
+    this._width = this.size?.w || this.settings.capture.defaultWidth;
+    this._height = this.size?.h || this.settings.capture.defaultHeight;
+  }
+
+  get size(): Dimensions2D {
+    return this._size;
   }
 }

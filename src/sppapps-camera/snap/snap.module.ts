@@ -8,6 +8,7 @@ import { CancelModule, OkModule } from '@sppapps-form';
 import { CaptureGalleryModule } from '../capture-gallery';
 import { SnapControlModule } from '../snap-control';
 import { SnapComponent } from './snap.component';
+import { HelpersModule } from '@sppapps-helpers';
 
 @NgModule({
     declarations: [
@@ -21,7 +22,8 @@ import { SnapComponent } from './snap.component';
         SnapControlModule,
         CaptureGalleryModule,
         OkModule,
-        CancelModule
+        CancelModule,
+        HelpersModule
     ],
     exports: [
         SnapComponent
