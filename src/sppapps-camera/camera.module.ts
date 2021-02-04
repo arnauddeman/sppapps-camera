@@ -4,7 +4,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { LoggerModule } from '@sppapps-logging';
 import { ModalSnapComponent, ModalSnapModule } from './modal-snap';
-import { CameraEffects, cameraReducers } from './redux';
+import { cameraReducers } from './redux';
 import { CameraService } from './shared';
 import { SnapComponent, SnapModule } from './snap';
 import { SnapControlComponent, SnapControlModule } from './snap-control';
@@ -17,7 +17,6 @@ import { SnapLauncherComponent, SnapLauncherModule } from './snap-launcher';
     imports: [
         CommonModule,
         StoreModule.forFeature('camera', cameraReducers),
-        EffectsModule.forFeature([CameraEffects]),
         SnapModule,
         SnapControlModule,
         ModalSnapModule,
@@ -37,7 +36,6 @@ export class CameraModule {
     constructor() {
         LoggerModule.configureLoggingConsoleDebug(
             'cameraReducers',
-            CameraEffects,
             CameraService
         );
     }

@@ -2,8 +2,8 @@
         <div class="main-container">
                 <div class="webcam-container" [style.height.px]="width">
                         <webcam *ngIf="active$ | async" [height]="height" [width]="width" [trigger]="snap$"
-                                (cameraSwitched)="onCameraSwitched($event)" (initError)="onInitError($event)"
-                                (imageCapture)="onImageCapture($event)">
+                                mirrorImage="always" (cameraSwitched)="onCameraSwitched($event)"
+                                (initError)="onInitError($event)" (imageCapture)="onImageCapture($event)">
                         </webcam>
                 </div>
                 <div class="snap-control-container">

@@ -7,6 +7,7 @@ import { LoggingService } from '@sppapps-logging';
 import { RxOperationQuery, RxOperationStatus } from '@sppapps-rx';
 import { ReplaySubject } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
+import { SelectSelectionAction } from '../../../../sppapps-selection-manager/src/sppapps-selection-manager/redux';
 import { getCameraResetOperation, getSnapOperation, ResetCameraAction, SnapCameraAction, UnselectSnapCameraAction } from '../redux';
 import { CameraState } from '../redux/camera.states';
 
@@ -78,6 +79,14 @@ export class CaptureGalleryComponent extends SComp implements OnInit {
       updatedCaptures.splice(0, 1);
     }
     updatedCaptures.push(newCapture);
+    if (updatedCaptures.length === 1) {
+      this._store.dispatch(
+        new SelectSelectionAction({
+          group: this.settings.selection.groups.captures,
+          item: newCapture
+        })
+      );
+    }
     this.captures = updatedCaptures;
   }
 
