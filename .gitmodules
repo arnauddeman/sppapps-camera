@@ -4,3 +4,6 @@
 [submodule "shared/shared/sppapps-camera-shared"]
 	path = shared/shared/sppapps-camera-shared
 	url = git@github.com:arnauddeman/sppapps-camera-shared.git
+[submodule "shared/sppapps-camera-shared"]
+	path = shared/sppapps-camera-shared
+	url = git@github.com:arnauddeman/sppapps-camera-shared.git
